@@ -19,13 +19,21 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-
+#include <avr/io.h>
+#include <util/delay.h>
 
 class I2C {
     private:
         uint8_t SDA;
         uint8_t SCL;
         int clockSpeed;
+
+        void setOpenDrain(uint8_t pin);
+        void writeOpenDrain(uint8_t pin, bool state);
+
+        void startCondition();
+        void stopCondition();
+        bool readACK();
 
         
     public:
@@ -41,10 +49,9 @@ class I2C {
         void beginTransmission(uint8_t address);
         void endTransmission();
 
-        void read();
+        uint8_t read();
         void write(uint8_t data);
         
-
         void setClock(int clockSpeed);
 
 };

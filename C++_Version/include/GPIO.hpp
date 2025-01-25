@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include <vector>
 
+//#include <avr/io.h>
+
 class GPIO
 {
 private:
@@ -39,11 +41,10 @@ private:
 public:
     GPIO() = default;
     GPIO(std::vector<int> digitalPins, std::vector<int> analogPins, std::vector<int> pwmPins);
+
     void setup(uint8_t pin, bool stateOperative);
     void writeDigitalPin(uint8_t pin, bool stateOperative);
     bool readDigitalPin(uint8_t pin);
     void writeAnalogPin(uint8_t pin, bool stateOperative);
-    int readAnalogPin(uint8_t pin);
-
-   
+    int readAnalogPin(uint8_t pin);   
 };

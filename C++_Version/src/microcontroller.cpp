@@ -102,6 +102,11 @@ void Microcontroller::I2Cbegin(uint8_t address){
 }
 
 
-bool Microcontroller::available(){
+bool Microcontroller::I2Cavailable(){
     return i2c.available();
+}
+
+
+void Microcontroller::I2Cwrite(uint8_t data){
+    i2c.write(data);
 }

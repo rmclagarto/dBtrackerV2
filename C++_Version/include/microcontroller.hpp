@@ -10,6 +10,8 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+
+
 #include "I2C.hpp"
 #include "SPI.hpp"
 #include "GPIO.hpp"
@@ -39,6 +41,7 @@ public:
 
     //I2C Methods
     void I2Cbegin(uint8_t address = 0);
-    bool available();
+    bool I2Cavailable();
+    void I2Cwrite(uint8_t data);
 
 };
