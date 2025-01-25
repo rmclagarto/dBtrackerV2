@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-
+#include <stdexcept>
 #include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "I2C.hpp"
+#include "SPI.hpp"
 #include "GPIO.hpp"
+#include "Timer.hpp"
 
 using json = nlohmann::json;
 using namespace std;
@@ -21,6 +23,7 @@ class Microcontroller
 private:
     GPIO gpio;
     I2C i2c;
+    SPI spi;
 
 
     bool isByte(int byte);

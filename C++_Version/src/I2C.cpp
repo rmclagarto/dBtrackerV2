@@ -14,7 +14,7 @@ void I2C::begin(uint8_t address){
     if(address == 0){
         printf("Iniciando comunicacao I2C como mestre\n");
     }else{
-        printf("Iniciando comunicacao I2C como escravo, com o endereco especificado [%d]\n", address);
+        printf("Iniciando comunicacao I2C como escravo, com o endereco [%d]\n", address);
     }
 }
 

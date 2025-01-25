@@ -1,10 +1,5 @@
 
-/*
-    3. Controle de Tempo
-        delay(ms) → Pausa a execução por ms milissegundos.
-        delayMicroseconds(us) → Pausa a execução por us microssegundos.
-        millis() → Retorna o tempo em milissegundos desde que o Arduino foi ligado.
-
+/*    
     4. Comunicação Serial
         Serial.begin(baudRate) → Inicia a comunicação serial.
         Serial.print(data) → Envia dados via serial.
@@ -14,27 +9,9 @@
     5. Interrupções
         attachInterrupt(interrupt, isr, mode) → Ativa uma interrupção externa.
         detachInterrupt(interrupt) → Desativa uma interrupção externa.
-
-    6. Comunicação I2C e SPI (Opcional, para periféricos)
-        // Funções relacionadas ao I2C
-        Wire.begin() → Inicia comunicação I2C como mestre.
-        Wire.begin(address) → Inicia comunicação I2C como escravo, com o endereço especificado.
-        Wire.requestFrom(address, quantity) → Solicita um número de bytes de um dispositivo I2C com o endereço 'address'.
-        Wire.beginTransmission(address) → Inicia uma transmissão para o dispositivo com o endereço especificado.
-        Wire.write(data) → Envia um byte de dados para o dispositivo I2C.
-        Wire.endTransmission() → Finaliza a transmissão de dados e libera o barramento I2C.
-        Wire.available() → Retorna o número de bytes disponíveis para leitura.
-        Wire.read() → Lê um byte de dados do dispositivo I2C.
-        Wire.setClock(clockSpeed) → Ajusta a velocidade do barramento I2C, onde 'clockSpeed' pode ser, por exemplo, 100000 ou 400000.
-
-        // Funções relacionadas ao SPI
-        SPI.begin() → Inicia a comunicação SPI.
-        SPI.beginTransaction(SPISettings(speed, bitOrder, dataMode)) → Configura a transação SPI com a velocidade, ordem de bits e modo de dados.
-        SPI.transfer(data) → Envia e recebe um byte de dados via SPI.
-        SPI.endTransaction() → Finaliza a transação SPI.
-        SPI.end() → Encerra a comunicação SPI.
 */
-#include <stdexcept>
+
+
 #include "../include/microcontroller.hpp"
 
 
@@ -42,7 +19,7 @@ Microcontroller::Microcontroller(const std::string& microName)
 {
     auto found = false;
     
-    std::ifstream inputFile("boardsConfiguration.json");
+    std::ifstream inputFile("./boardsInfo/boardsConfiguration.json");
     if(!inputFile.is_open()){
         throw std::runtime_error("File not found");
     }
@@ -59,7 +36,6 @@ Microcontroller::Microcontroller(const std::string& microName)
             std::vector<int> analogPins = item.value().at("Analog_Pins");
             std::vector<int> pwmPins = item.value().at("PWM_Pins");
             
-            
             this->gpio = GPIO(digitalPins, analogPins, pwmPins);
 
 
@@ -67,8 +43,18 @@ Microcontroller::Microcontroller(const std::string& microName)
             uint8_t SCL = item.value().at("I2C_Pins").at("SCL");
             uint8_t SDA = item.value().at("I2C_Pins").at("SDA");
 
-
             this->i2c = I2C(SCL, SDA);
+
+
+            //Extract SPI information
+            uint8_t mosi = item.value().at("SPI_Pins").at("MOSI");
+            uint8_t miso = item.value().at("SPI_Pins").at("MISO");
+            uint8_t sck = item.value().at("SPI_Pins").at("SCK");
+            uint8_t ss = item.value().at("SPI_Pins").at("SS");
+
+            this->spi = SPI(mosi, miso, sck, ss);
+
+
             break;
         }
     }
